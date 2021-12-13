@@ -1,0 +1,61 @@
+<%- include('shared/head.ejs', {title: 'Notes' }) %>
+
+    <body>
+        <%- include('shared/navbar.ejs') %>
+
+            <main>
+                <header class="cd-main-header text-center flex flex-column flex-center">
+                    <h5>Bonjour
+                        <%= profile.firstname %>
+                            <strong>
+                            <%= profile.name %>
+                        </strong>
+                    </h5>
+                    <h3>Vos notes</h3>
+                </header>
+
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-10 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cours</th>
+                                    <th scope="col">Coef</th>
+                                    <th scope="col">ECTS</th>
+                                    <th scope="col">Note d'examen</th>
+                                    <th scope="col">Moyenne</th>
+                                    <th scope="col">Enseignant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var note in notes) { %>
+                                    <tr>
+                                        <td>
+                                            <%= notes[note].course %>
+                                        </td>
+                                        <td>
+                                            <%= notes[note].coef %>
+                                        </td>
+                                        <td>
+                                            <%= notes[note].ects %>
+                                        </td>
+                                        <td>
+                                            <%= notes[note].exam %>
+                                        </td>
+                                        <td>
+                                            <%= notes[note].average %>
+                                        </td>
+                                        <td>
+                                            <%= notes[note].teacher_civility %>
+                                                <%= notes[note].teacher_last_name %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+    </body>
+
+    </html>

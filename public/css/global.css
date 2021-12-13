@@ -1,0 +1,17 @@
+body {
+    overflow-x: hidden;
+    /* Hide scrollbars */
+}
+
+.bg-ghostwhite {
+    /* background-color: #f7fafc; */
+    background-color: rgb(240, 240, 250);
+}
+
+.alert {
+    font-size: 16px;
+}
+
+.dateToday {
+    background-color: rgba(245, 245, 248, .5);
+}

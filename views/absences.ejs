@@ -1,0 +1,60 @@
+<%- include('shared/head.ejs', {title: 'Absences' }) %>
+
+    <body>
+        <%- include('shared/navbar.ejs') %>
+
+            <main>
+                <header class="cd-main-header text-center flex flex-column flex-center">
+                    <h5>Bonjour
+                        <%= profile.firstname %>
+                            <strong>
+                            <%= profile.name %>
+                        </strong>
+                    </h5>
+                    <h3>Vos absences</h3>
+                </header>
+
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-10 table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Semestre</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Heure</th>
+                                    <th scope="col">Matière</th>
+                                    <th scope="col">Justifié</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var abs in absences) { %>
+                                    <tr>
+                                        <td>
+                                            <%= absences[abs].trimester %>
+                                        </td>
+                                        <td>
+                                            <%= absences[abs].date.substring(0,10) %>
+                                        </td>
+                                        <td>
+                                            <%= absences[abs].date.substring(11,17) %>
+                                        </td>
+                                        <td>
+                                            <%= absences[abs].course_name %>
+                                        </td>
+                                        <td>
+                                            <% if(absences[abs].justified) {%>
+                                                Oui
+                                                <% } else { %>
+                                                    Non
+                                                    <% } %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+    </body>
+
+    </html>

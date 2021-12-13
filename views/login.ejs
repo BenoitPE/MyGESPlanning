@@ -1,0 +1,58 @@
+<%- include('shared/head.ejs', {title: 'Se connecter' }) %>
+    <link rel="stylesheet" href="/lib/schedule/css/style.css">
+
+    </head>
+
+    <body>
+        <main style="height: 100vh;">
+            <div class="row h-100">
+                <div class="d-none d-sm-block col-6 h-100">
+                    <img src="images/bg_2.jpg" alt="Paris" style="height:100%; width:100%;object-fit: cover;">
+                </div>
+
+                <div class="col-sm-12 col-md-6 h-100">
+                    <div class="row align-items-center justify-content-center h-100">
+                        <div class="col-8">
+                            <h3>Se connecter à <strong>YouGES</strong></h3>
+                            <p class="mb-4">Votre alternative légère à MyGES.</p>
+                            <% if(error) {%>
+
+                                <div class="alert alert-danger" role="alert">
+
+                                    <% if(error=="Error: Bad password" ) {%>
+                                        Erreur: Les identifiants saisis sont incorrects...
+                                        <% } else {%>
+                                            Erreur: La connexion avec l'API a été interrompue...
+                                            <% } %>
+                                </div>
+                                <% } %>
+                                    <form action="#" method="post">
+                                        <div class="form-group first">
+                                            <label for="username">Identifiant</label>
+                                            <input required type="text" id="username" name="username" class="form-control" placeholder="Votre identifiant MyGES">
+                                            <!-- <small id="loginHelp" class="form-text text-muted">Vos identifiants sont stockés sur votre appareil grâce aux variables de session</small> -->
+                                        </div>
+                                        <div class="form-group last mb-3">
+                                            <label for="password">Mot de passe</label>
+                                            <input required type="password" id="password" name="password" class="form-control" placeholder="Votre mot de passe MyGES">
+                                        </div>
+
+                                        <div class="d-flex mb-5 align-items-center">
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" checked disabled>
+                                                <label class="form-check-label" for="flexCheckCheckedDisabled">
+                                                    Se souvenir de moi
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-lg btn-block">Connexion</button>
+
+                                    </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
