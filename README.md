@@ -4,7 +4,7 @@ Ce repo est une application web semblable à celle de MyGES mais en plus légèr
 L'application web permet d'éviter d’aller sur MyGES (qui est hors service régulièrement) et de récupérer directement les informations importantes.  
 
 Les fonctionnalités disponibles sur cette application :
--	L’application permet de se connecter via l'API MyGES, les informations sont stockées en tant que variables de session.
+-	L’application permet de se connecter via [l'API MyGES](https://github.com/quantumsheep/myges-cli), les informations sont stockées en tant que variables de session.
 -	L'application permet de voir son emploi du temps rapidement
 -	L'application permet de voir ses notes
 -	L'application permet ses absences
