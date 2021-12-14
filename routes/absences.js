@@ -1,4 +1,5 @@
 const express = require('express')
+const moment = require('moment');
 var router = express.Router();
 let api = undefined;
 
@@ -18,7 +19,7 @@ async function getAbsences(year) {
 
     for (var abs in apiAbsences) {
         let data = {
-            date: new Date(apiAbsences[abs].date).toLocaleString(),
+            date: moment(apiAbsences[abs].date).format('DD/MM/YYYY, HH:mm:ss'),
             course_name: apiAbsences[abs].course_name,
             trimester: apiAbsences[abs].trimester_name,
             year: apiAbsences[abs].year,
