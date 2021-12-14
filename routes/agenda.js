@@ -73,10 +73,12 @@ async function getAgenda(week) {
         } else {
             data.modality = '';
         }
+        console.log(`data.start_date: ${data.start_date}`);
+        console.log(`data.start_date.substring(0, 10): ${data.start_date.substring(0, 10)} \n`);
 
         agenda[data.start_date.substring(0, 10)].push(data);
     }
-    // console.log(agenda);
+    console.log(agenda);
     return agenda;
 }
 
