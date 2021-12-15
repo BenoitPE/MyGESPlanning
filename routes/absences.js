@@ -19,7 +19,7 @@ async function getAbsences(year) {
 
     for (var abs in apiAbsences) {
         let data = {
-            date: moment(apiAbsences[abs].date).format('DD/MM/YYYY, HH:mm:ss'),
+            date: moment(apiAbsences[abs].date).locale('fr').format('DD/MM/YYYY, HH:mm:ss'),
             course_name: apiAbsences[abs].course_name,
             trimester: apiAbsences[abs].trimester_name,
             year: apiAbsences[abs].year,

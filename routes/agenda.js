@@ -51,8 +51,8 @@ async function getAgenda(week) {
 
     for (var lesson in lessons) {
         var data = {
-            start_date: moment(lessons[lesson].start_date).format('DD/MM/YYYY, HH:mm:ss'),
-            end_date: moment(lessons[lesson].end_date).format('DD/MM/YYYY, HH:mm:ss'),
+            start_date: moment(lessons[lesson].start_date).locale('fr').format('DD/MM/YYYY, HH:mm:ss'),
+            end_date: moment(lessons[lesson].end_date).locale('fr').format('DD/MM/YYYY, HH:mm:ss'),
             name: lessons[lesson].name,
             teacher: lessons[lesson].teacher
         };
