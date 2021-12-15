@@ -1,4 +1,5 @@
 const express = require('express')
+const moment = require('moment');
 var router = express.Router();
 let api = undefined;
 
@@ -50,8 +51,8 @@ async function getAgenda(week) {
 
     for (var lesson in lessons) {
         var data = {
-            start_date: new Date(lessons[lesson].start_date).toLocaleString(),
-            end_date: new Date(lessons[lesson].end_date).toLocaleString(),
+            start_date: moment(lessons[lesson].start_date).format('DD/MM/YYYY, HH:mm:ss'),
+            end_date: moment(lessons[lesson].end_date).format('DD/MM/YYYY, HH:mm:ss'),
             name: lessons[lesson].name,
             teacher: lessons[lesson].teacher
         };
@@ -73,12 +74,9 @@ async function getAgenda(week) {
         } else {
             data.modality = '';
         }
-        console.log(`data.start_date: ${data.start_date}`);
-        console.log(`data.start_date.substring(0, 10): ${data.start_date.substring(0, 10)} \n`);
-
         agenda[data.start_date.substring(0, 10)].push(data);
     }
-    console.log(agenda);
+    // console.log(agenda);
     return agenda;
 }
 
