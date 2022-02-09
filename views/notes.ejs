@@ -22,6 +22,7 @@
                                     <th scope="col">Cours</th>
                                     <th scope="col">Coef</th>
                                     <th scope="col">ECTS</th>
+                                    <th scope="col">Notes</th>
                                     <th scope="col">Note d'examen</th>
                                     <th scope="col">Moyenne</th>
                                     <th scope="col">Enseignant</th>
@@ -39,6 +40,11 @@
                                         <td>
                                             <%= notes[note].ects %>
                                         </td>
+                                        <td>
+                                        <% for(var n in notes[note].grades) { %>
+                                            <%= notes[note].grades[n] %>   
+                                        <% } %>
+                                    </td>
                                         <td>
                                             <%= notes[note].exam %>
                                         </td>
