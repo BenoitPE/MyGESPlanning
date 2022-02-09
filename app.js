@@ -51,5 +51,4 @@ app.use('/agenda', checkLoggedIn, agendaRouter);
 app.use('/absences', checkLoggedIn, absencesRouter);
 app.use('/notes', checkLoggedIn, notesRouter);
 
-
 app.listen(PORT, () => console.log(`Server Running at port ${PORT}`));

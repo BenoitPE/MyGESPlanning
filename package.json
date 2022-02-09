@@ -1,6 +1,6 @@
 {
     "name": "MyGESPlanning",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A simple Node.js web app to get all informations from MyGES",
     "main": "index.js",
     "dependencies": {
@@ -10,6 +10,7 @@
         "express-session": "^1.17.2",
         "moment": "^2.29.1",
         "myges": "^4.2.0",
+        "node-fetch": "^2.6.1",
         "nodemon": "^2.0.15",
         "path": "^0.12.7"
     },
