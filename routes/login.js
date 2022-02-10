@@ -25,7 +25,7 @@ router.get('/', async function(req, res) {
 
 router.post('/', async function(req, res) {
     try {
-        await login(req.body.username, req.body.password)
+        await login(req.body.username.split('@')[0], req.body.password)
             .then(apiPromessResolved => {
                 req.app.set('api', apiPromessResolved);
             });
@@ -36,10 +36,10 @@ router.post('/', async function(req, res) {
         res.redirect('/agenda');
     } catch (error) {
         res.render('login', {
+            upToDate: upToDate,
             error: error
         });
     }
-    req.session.username = "test";
 })
 
 async function login(username, password) {
