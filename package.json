@@ -1,6 +1,6 @@
 {
     "name": "MyGESPlanning",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A simple Node.js web app to get all informations from MyGES",
     "main": "index.js",
     "dependencies": {

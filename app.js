@@ -1,14 +1,11 @@
 var express = require('express')
 var path = require('path');
-var bodyParser = require("body-parser");
 var session = require('express-session');
 var app = express();
-const myges = require("myges").default;
 const PORT = 3000;
-let api = undefined;
 
 var checkLoggedIn = async function(req, res, next) {
-    if (req.session.connected) {
+    if (req.session.connected && req.session.username !== "" && req.session.password !== "") {
         next();
     } else {
         req.session.connected = false;
@@ -39,10 +36,7 @@ var absencesRouter = require('./routes/absences');
 var loginRouter = require('./routes/login');
 var agendaRouter = require('./routes/agenda');
 var notesRouter = require('./routes/notes');
-const req = require('express/lib/request');
 
-
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/login', loginRouter);
 app.use('/logout', logout, loginRouter);
 app.use('/', checkLoggedIn, agendaRouter);
@@ -50,5 +44,6 @@ app.use('/index', checkLoggedIn, agendaRouter);
 app.use('/agenda', checkLoggedIn, agendaRouter);
 app.use('/absences', checkLoggedIn, absencesRouter);
 app.use('/notes', checkLoggedIn, notesRouter);
+
 
 app.listen(PORT, () => console.log(`Server Running at port ${PORT}`));
