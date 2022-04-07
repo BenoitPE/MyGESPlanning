@@ -1,7 +1,9 @@
 const express = require('express')
 var router = express.Router();
 const myges = require("myges").default;
-const fetch = require('node-fetch');
+//const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 var pjson = require('../package.json');
 let url = "https://raw.githubusercontent.com/BenoitPE/MyGESPlanning/main/package.json";
 let settings = { method: "Get" };
