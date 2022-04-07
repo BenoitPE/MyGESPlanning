@@ -6,7 +6,6 @@ let api = undefined;
 router.get('/', async function(req, res) {
     api = req.app.get('api');
 
-    // console.log(req.session);
     let week = getWeekDays(new Date(Date.now()));
 
     res.render('agenda', {
@@ -76,7 +75,19 @@ async function getAgenda(week) {
         }
         agenda[data.start_date.substring(0, 10)].push(data);
     }
-    // console.log(agenda);
+
+    // Sort agenda
+    for(date in agenda) {
+        agenda[date] = agenda[date].sort(function(a, b){
+
+            // If same hours, check minutes
+            if(a.start_date.substring(12,14) == b.start_date.substring(12,14))
+                return a.start_date.substring(15,17) - b.start_date.substring(15,17)
+    
+            return a.start_date.substring(12,14) - b.start_date.substring(12,14);
+        });
+    }
+
     return agenda;
 }
 
