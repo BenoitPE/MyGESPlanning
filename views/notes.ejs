@@ -1,5 +1,5 @@
 <%- include('shared/head.ejs', {title: 'Notes' }) %>
-
+</head>
     <body>
         <%- include('shared/navbar.ejs') %>
 
@@ -13,9 +13,20 @@
                     </h5>
                     <h3>Vos notes</h3>
                 </header>
-
+                
                 <div class="row mt-4 justify-content-center">
                     <div class="col-10 table-responsive">
+
+                        <div class="row mb-4 justify-content-center">
+                            <div class="col-sm-8 col-md-2">
+                                <select class="form-select" style="text-align: center;" onchange="ChangeSemester()" id="selectSemester">
+                                    <% for(id in semesters) {%>
+                                        <option value="<%= semesters[id]['semester_id'] %>"><%= semesters[id]['semester_name'] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -30,7 +41,7 @@
                             </thead>
                             <tbody>
                                 <% for(var note in notes) { %>
-                                    <tr>
+                                    <tr class="<%= notes[note].trimester %>">
                                         <td>
                                             <%= notes[note].course %>
                                         </td>
@@ -62,6 +73,8 @@
                     </div>
                 </div>
             </main>
+
+            <script src="/js/notes.js"></script>
     </body>
 
     </html>
