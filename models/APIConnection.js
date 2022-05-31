@@ -106,9 +106,9 @@ class APIConnection {
 
     static stringToDate(text, hours, minutes, seconds) {
         var date = new Date();
-        date.setUTCFullYear(text.substring(6, 10))
-        date.setMonth(text.substring(3, 5) - 1);
         date.setDate(text.substring(0, 2));
+        date.setMonth(text.substring(3, 5) - 1);
+        date.setUTCFullYear(text.substring(6, 10))
         date.setUTCHours(hours);
         date.setUTCMinutes(minutes);
         date.setUTCSeconds(seconds);
@@ -119,7 +119,7 @@ class APIConnection {
     getWeekFirstDay(weekTextArray) {
         return weekTextArray[0];
     }
-    
+
     getWeekLastDay(weekTextArray) {
         return weekTextArray[weekTextArray.length - 1];
     }

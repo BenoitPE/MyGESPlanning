@@ -1,10 +1,8 @@
 function ChangeSemester() {
-    
-    for(var option of document.getElementById("selectSemester").options) {
-        console.log(option.value)
 
+    for (var option of document.getElementById("selectSemester").options) {
         let courses = document.getElementsByClassName(option.value)
-        for(var course of courses) {
+        for (var course of courses) {
             course.style.visibility = "hidden";
             course.style.display = "none";
 
@@ -12,7 +10,7 @@ function ChangeSemester() {
     }
 
     let selectedCourses = document.getElementsByClassName(document.getElementById("selectSemester").options[document.getElementById("selectSemester").selectedIndex].value);
-    for(var course of selectedCourses) {
+    for (var course of selectedCourses) {
         course.style.visibility = "visible";
         course.style.display = "table-row";
 
