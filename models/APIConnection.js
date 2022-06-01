@@ -18,7 +18,7 @@ class APIConnection {
     }
 
     async getGrades() {
-        let notes = await this.api.getGrades("2021");
+        let notes = await this.api.getGrades(this.getYear());
         notes.sort((a, b) => (a.course > b.course) ? 1 : ((b.course > a.course) ? -1 : 0))
         notes.sort(function (a, b) {
             return a.trimester - b.trimester;
@@ -26,8 +26,8 @@ class APIConnection {
         return notes;
     }
 
-    async getAbsences(year) {
-        let apiAbsences = await this.api.getAbsences(year);
+    async getAbsences() {
+        let apiAbsences = await this.api.getAbsences(this.getYear());
         let absencesArray = [];
 
         for (var abs in apiAbsences) {
@@ -122,6 +122,11 @@ class APIConnection {
 
     getWeekLastDay(weekTextArray) {
         return weekTextArray[weekTextArray.length - 1];
+    }
+
+    getYear(){
+      const CurrentDate = new Date();
+      return (CurrentDate.getMonth() < 8) ? CurrentDate.getFullYear() - 1 : CurrentDate.getFullYear();
     }
 
 }

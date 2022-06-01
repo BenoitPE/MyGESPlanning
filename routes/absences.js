@@ -8,7 +8,7 @@ router.get('/', async function(req, res) {
 
     res.render('absences', {
         profile: req.session.profile,
-        absences: await api.getAbsences("2021")
+        absences: await api.getAbsences()
     });
 })
 
