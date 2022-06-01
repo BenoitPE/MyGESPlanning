@@ -3691,7 +3691,7 @@ a {
 }
 
 .cd-schedule__event a::before {
-    content: attr(data-start) " - " attr(data-end)
+   content: attr(data-start) " - " attr(data-end) " | " attr(data-room)
 }
 
 @media (min-width: 48rem) {

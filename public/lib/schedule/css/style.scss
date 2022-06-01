@@ -227,7 +227,7 @@ a {
   }
 
   a::before { // event start/end date
-    content: attr(data-start)' - 'attr(data-end);
+   content: attr(data-start) ' - ' attr(data-end) ' | ' attr(data-room);
   }
   
   .js & {

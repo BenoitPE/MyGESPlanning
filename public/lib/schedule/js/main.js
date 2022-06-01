@@ -109,6 +109,10 @@
         //update event name and time
         this.modalEventName.textContent = target.getElementsByTagName('em')[0].textContent;
         this.modalDate.textContent = target.getAttribute('data-start') + ' - ' + target.getAttribute('data-end');
+        
+        if (target.getAttribute("data-room") != '') {
+         this.modalDate.textContent += ' | ' + target.getAttribute('data-room');
+        }
         this.modal.setAttribute('data-event', target.getAttribute('data-event'));
 
         //update event content
