@@ -72,7 +72,7 @@ class APIConnection {
                 data.campus = lessons[lesson].rooms[0].campus;
             } else {
                 data.room = '';
-                data.color = '';
+                data.color = 'var(--cd-color-event-5)';
                 data.floor = '';
                 data.campus = '';
             }
