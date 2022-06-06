@@ -40,6 +40,8 @@ router.post('/', async function(req, res) {
         console.log("New user connected: " + req.session.username);
         res.redirect('/agenda');
     } catch (error) {
+        req.session.destroy();
+        res.clearCookie("connect.sid")
         res.render('login', {
             upToDate: upToDate,
             error: error

@@ -10,13 +10,13 @@ var checkLoggedIn = async function(req, res, next) {
     if (req.session.connected && req.session.username !== "" && req.session.password !== "") {
         next();
     } else {
-        req.session.connected = false;
         res.redirect("/login");
     }
 }
 
 var logout = function(req, res, next) {
     req.session.destroy();
+    res.clearCookie("connect.sid")
     res.clearCookie("MygesBearerToken")
     res.redirect('/login');
     res.end();
@@ -29,7 +29,7 @@ app.set('trust proxy', 1)
 app.use(session({
     secret: process.env.COOKIE_SECRET,
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false }
 }))
 app.use(express.json());
