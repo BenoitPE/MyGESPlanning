@@ -27,7 +27,6 @@ class APIConnection {
             let expires_in = parseInt(this.api.credentials.expires_in, 10) * 1000;;
             this.api.credentials.expires_in = (Date.now() + expires_in).toString(); 
             res.cookie('MygesBearerToken', encrypt(JSON.stringify(this.api)), {
-             maxAge: expires_in,
              sameSite: 'none',
              secure: true
              });
@@ -85,12 +84,10 @@ class APIConnection {
 
             if (lessons[lesson].rooms) {
                 data.room = lessons[lesson].rooms[0].name;
-                data.color = 'var(--cd-color-event-1)';
                 data.floor = lessons[lesson].rooms[0].floor;
                 data.campus = lessons[lesson].rooms[0].campus;
             } else {
                 data.room = '';
-                data.color = 'var(--cd-color-event-5)';
                 data.floor = '';
                 data.campus = '';
             }
@@ -100,6 +97,13 @@ class APIConnection {
             } else {
                 data.modality = '';
             }
+
+            if(data.modality == 'Présentiel'){
+               data.color = 'var(--cd-color-event-1)';
+            } else {
+               data.color = 'var(--cd-color-event-5)';
+            }
+
             agenda[data.start_date.substring(0, 10)].push(data);
         }
 

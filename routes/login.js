@@ -33,7 +33,7 @@ router.post('/', async function(req, res) {
         req.session.password = encrypt(req.body.password);
 
         let api = new APIConnection(req.session.username, req.session.password);
-        await api.login(req, res);
+        api.api = await login(req, res)
 
         req.session.profile = await api.getProfile();
 
@@ -46,5 +46,16 @@ router.post('/', async function(req, res) {
         });
     }
 })
+
+async function login(req, res) {
+   let mygesApi = await myges.login(req.body.username.split('@')[0], req.body.password);
+   let expires_in = parseInt(mygesApi.credentials.expires_in, 10) * 1000;;
+   mygesApi.credentials.expires_in = (Date.now() + expires_in).toString(); 
+   res.cookie('MygesBearerToken', encrypt(JSON.stringify(mygesApi)), {
+    sameSite: 'none',
+    secure: true
+    });
+   return mygesApi;
+}
 
 module.exports = router;
