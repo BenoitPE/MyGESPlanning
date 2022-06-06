@@ -28,17 +28,12 @@ router.get('/', async function(req, res) {
 
 router.post('/', async function(req, res) {
     try {
-        await login(req.body.username.split('@')[0], req.body.password)
-            .then(apiPromessResolved => {
-                //req.app.set('api', apiPromessResolved);
-            });
-
         req.session.connected = true;
         req.session.username = req.body.username.split('@')[0];
         req.session.password = encrypt(req.body.password);
 
         let api = new APIConnection(req.session.username, req.session.password);
-        await api.login();
+        await api.login(req, res);
 
         req.session.profile = await api.getProfile();
 
@@ -51,10 +46,5 @@ router.post('/', async function(req, res) {
         });
     }
 })
-
-async function login(username, password) {
-    let mygesApi = await myges.login(username, password)
-    return mygesApi;
-}
 
 module.exports = router;

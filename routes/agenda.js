@@ -5,7 +5,7 @@ let api = undefined;
 
 router.get('/', async function(req, res) {
     api = new APIConnection(req.session.username, req.session.password);
-    await api.login();
+    await api.login(req, res);
 
     let week = getWeekDays(new Date(Date.now()));
 

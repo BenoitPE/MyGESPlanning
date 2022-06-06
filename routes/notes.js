@@ -4,7 +4,7 @@ const APIConnection = require('../models/APIConnection.js');
 
 router.get('/', async function(req, res) {
     let api = new APIConnection(req.session.username, req.session.password);
-    await api.login();
+    await api.login(req, res);
 
     let grades = await api.getGrades();
 

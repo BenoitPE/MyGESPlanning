@@ -1,6 +1,7 @@
-const myges = require("myges").default;
+const myges = require("myges");
 const { encrypt, decrypt } = require('../crypto');
 const moment = require('moment');
+const session = require("express-session");
 
 class APIConnection {
     username;
@@ -12,8 +13,25 @@ class APIConnection {
         this.password = decrypt(hashedPassword);
     }
 
-    async login() {
-        this.api = await myges.login(this.username, this.password);
+    async login(req, res) {
+      let loginOK = false
+      if(req.cookies && req.cookies['MygesBearerToken']) {
+      let ApiToken = JSON.parse(decrypt(req.cookies['MygesBearerToken']))
+         if (ApiToken.credentials?.expires_in && Date.now() < ApiToken.credentials.expires_in) {
+            this.api = new myges.GesAPI(ApiToken.credentials);
+            loginOK = true
+         } 
+      }
+      if(loginOK == false) {
+            this.api = await myges.GesAPI.login(this.username, this.password);
+            let expires_in = parseInt(this.api.credentials.expires_in, 10) * 1000;;
+            this.api.credentials.expires_in = (Date.now() + expires_in).toString(); 
+            res.cookie('MygesBearerToken', encrypt(JSON.stringify(this.api)), {
+             maxAge: expires_in,
+             sameSite: 'none',
+             secure: true
+             });
+         }
         return this.api;
     }
 

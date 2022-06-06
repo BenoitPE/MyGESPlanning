@@ -2,6 +2,8 @@ var express = require('express')
 var path = require('path');
 var session = require('express-session');
 var app = express();
+var  cookieParser = require('cookie-parser');
+require('dotenv').config();
 const PORT = 3000;
 
 var checkLoggedIn = async function(req, res, next) {
@@ -15,7 +17,9 @@ var checkLoggedIn = async function(req, res, next) {
 
 var logout = function(req, res, next) {
     req.session.destroy();
+    res.clearCookie("MygesBearerToken")
     res.redirect('/login');
+    res.end();
 }
 
 app.use(express.static('public'));
@@ -23,7 +27,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('trust proxy', 1)
 app.use(session({
-    secret: 'keyboard cat',
+    secret: process.env.COOKIE_SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: { secure: false }
@@ -31,7 +35,7 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cookieParser());
 var absencesRouter = require('./routes/absences');
 var loginRouter = require('./routes/login');
 var agendaRouter = require('./routes/agenda');

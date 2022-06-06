@@ -4,7 +4,7 @@ var router = express.Router();
 
 router.get('/', async function(req, res) {
     let api = new APIConnection(req.session.username, req.session.password);
-    await api.login();
+    await api.login(req, res);
 
     res.render('absences', {
         profile: req.session.profile,
