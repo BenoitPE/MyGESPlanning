@@ -1,5 +1,4 @@
 const express = require('express')
-const ics = require('ics')
 var router = express.Router();
 const APIConnection = require('../models/APIConnection.js');
 let api = undefined;
