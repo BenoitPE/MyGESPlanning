@@ -16,6 +16,17 @@
 
                 <div class="row mt-4 justify-content-center">
                     <div class="col-10 table-responsive">
+
+                        <div class="row mb-4 justify-content-center">
+                            <div class="col-sm-8 col-md-2">
+                                <select class="form-select" style="text-align: center;" onchange="ChangeYearAbsence()" id="selectYearAbsence">
+                                    <% for(year of yearAbsence) {%>
+                                        <option value="<%= year['year_id'] %>"><%= year['year_name'] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                        </div>
+
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -27,34 +38,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for(var abs in absences) { %>
-                                    <tr>
+                                <% for(var absence of absences) { %>
+                                    <tr class="<%= absence.year*absence.year %>">
                                         <td>
-                                            <%= absences[abs].trimester %>
+                                            <%= absence.trimester %>
                                         </td>
                                         <td>
-                                            <%= absences[abs].date.substring(0,10) %>
+                                            <%= absence.date.substring(0,10) %>
                                         </td>
                                         <td>
-                                            <%= absences[abs].date.substring(11,17) %>
+                                            <%= absence.date.substring(11,17) %>
                                         </td>
                                         <td>
-                                            <%= absences[abs].course_name %>
+                                            <%= absence.course_name %>
                                         </td>
                                         <td>
-                                            <% if(absences[abs].justified) {%>
+                                            <% if(absence.justified) {%>
                                                 Oui
                                                 <% } else { %>
                                                     Non
                                                     <% } %>
                                         </td>
                                     </tr>
-                                    <% } %>
+                                <% } %>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </main>
+            <script src="/js/absences.js"></script>
     </body>
 
     </html>

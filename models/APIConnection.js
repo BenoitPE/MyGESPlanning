@@ -14,49 +14,64 @@ class APIConnection {
     }
 
     async login(req, res) {
-      let loginOK = false
-      if(req.cookies && req.cookies['MygesBearerToken']) {
-      let ApiToken = JSON.parse(decrypt(req.cookies['MygesBearerToken']))
-         if (ApiToken.credentials?.expires_in && Date.now() < ApiToken.credentials.expires_in) {
-            this.api = new myges.GesAPI(ApiToken.credentials);
-            loginOK = true
-         } 
-      }
-      if(loginOK == false) {
+        let loginOK = false
+        if (req.cookies && req.cookies['MygesBearerToken']) {
+            let ApiToken = JSON.parse(decrypt(req.cookies['MygesBearerToken']))
+            if (ApiToken.credentials?.expires_in && Date.now() < ApiToken.credentials.expires_in) {
+                this.api = new myges.GesAPI(ApiToken.credentials);
+                loginOK = true
+            }
+        }
+        if (loginOK == false) {
             this.api = await myges.GesAPI.login(this.username, this.password);
             let expires_in = parseInt(this.api.credentials.expires_in, 10) * 1000;;
-            this.api.credentials.expires_in = (Date.now() + expires_in).toString(); 
+            this.api.credentials.expires_in = (Date.now() + expires_in).toString();
             res.cookie('MygesBearerToken', encrypt(JSON.stringify(this.api)), {
-             sameSite: 'none',
-             secure: true
-             });
-         }
+                sameSite: 'none',
+                secure: true
+            });
+        }
         return this.api;
     }
 
     async getGrades() {
-        let notes = await this.api.getGrades(this.getYear());
-        notes.sort((a, b) => (a.course > b.course) ? 1 : ((b.course > a.course) ? -1 : 0))
-        notes.sort(function (a, b) {
-            return a.trimester - b.trimester;
-        });
+        let notes = [];
+        let years = await this.api.getYears();
+        for (const year of years) {
+            notes.push(await this.api.getGrades(year))
+        }
+        if (notes != null || notes != NaN || notes != undefined) {
+            for (let note of notes) {
+                note.sort((a, b) => (a.course > b.course) ? 1 : ((b.course > a.course) ? -1 : 0))
+                note.sort(function (a, b) {
+                    return b.trimester - a.trimester;
+                });
+            }
+        }
         return notes;
     }
 
     async getAbsences() {
-        let apiAbsences = await this.api.getAbsences(this.getYear());
+        let apiAbsences = [];
+        let years = await this.api.getYears();
+        for (const year of years) {
+            apiAbsences.push(await this.api.getAbsences(year))
+        }
         let absencesArray = [];
 
-        for (var abs in apiAbsences) {
-            let data = {
-                date: moment(apiAbsences[abs].date).locale('fr').format('DD/MM/YYYY, HH:mm:ss'),
-                course_name: apiAbsences[abs].course_name,
-                trimester: apiAbsences[abs].trimester_name,
-                year: apiAbsences[abs].year,
-                justified: apiAbsences[abs].justified
+        for (const years of apiAbsences)
+            if (years != undefined) {
+                for (var absence of years) {
+                    let data = {
+                        date: moment(absence.date).locale('fr').format('DD/MM/YYYY, HH:mm:ss'),
+                        course_name: absence.course_name,
+                        trimester: absence.trimester_name,
+                        year: absence.year,
+                        justified: absence.justified
+                    }
+                    absencesArray.push(data);
+                }
             }
-            absencesArray.push(data);
-        }
 
         return absencesArray;
     }
@@ -98,13 +113,15 @@ class APIConnection {
                 data.modality = '';
             }
 
-            if(data.modality == 'Présentiel'){
-               data.color = 'var(--cd-color-event-1)';
+            if (data.modality == 'Présentiel') {
+                data.color = 'var(--cd-color-event-1)';
             } else {
-               data.color = 'var(--cd-color-event-5)';
+                data.color = 'var(--cd-color-event-5)';
             }
-
-            agenda[data.start_date.substring(0, 10)].push(data);
+            let valideAgenda = agenda[data.start_date.substring(0, 10)];
+            if (valideAgenda != null || valideAgenda || NaN && valideAgenda || undefined) {
+                agenda[data.start_date.substring(0, 10)].push(data);
+            }
         }
 
         // Sort agenda
@@ -146,9 +163,9 @@ class APIConnection {
         return weekTextArray[weekTextArray.length - 1];
     }
 
-    getYear(){
-      const CurrentDate = new Date();
-      return (CurrentDate.getMonth() < 8) ? CurrentDate.getFullYear() - 1 : CurrentDate.getFullYear();
+    getYear() {
+        const CurrentDate = new Date();
+        return (CurrentDate.getMonth() < 8) ? CurrentDate.getFullYear() - 1 : CurrentDate.getFullYear();
     }
 
 }

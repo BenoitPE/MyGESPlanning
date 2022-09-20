@@ -40,33 +40,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% for(var note in notes) { %>
-                                    <tr class="<%= notes[note].trimester %>">
+                            <% for(var years of notes) { %>
+                                <% for(var note of years) { %>
+                                    <tr class="<%= note.trimester*note.year %>">
                                         <td>
-                                            <%= notes[note].course %>
+                                            <%= note.course %>
                                         </td>
                                         <td>
-                                            <%= notes[note].coef %>
+                                            <%= note.coef %>
                                         </td>
                                         <td>
-                                            <%= notes[note].ects %>
+                                            <%= note.ects %>
                                         </td>
                                         <td>
-                                        <% for(var n in notes[note].grades) { %>
-                                            <%= notes[note].grades[n] %>   
+                                        <% for(var n in note.grades) { %>
+                                            <%= note.grades[n] %>   
                                         <% } %>
                                     </td>
                                         <td>
-                                            <%= notes[note].exam %>
+                                            <%= note.exam %>
                                         </td>
                                         <td>
-                                            <%= notes[note].average %>
+                                            <%= note.average %>
                                         </td>
                                         <td>
-                                            <%= notes[note].teacher_civility %>
-                                                <%= notes[note].teacher_last_name %>
+                                            <%= note.teacher_civility %>
+                                                <%= note.teacher_last_name %>
                                         </td>
                                     </tr>
+                                        <% } %>
                                     <% } %>
                             </tbody>
                         </table>
