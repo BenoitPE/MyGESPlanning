@@ -144,7 +144,7 @@ class APIConnection {
 
 
     static stringToDate(text, hours, minutes, seconds) {
-        var date = new Date();
+        var date = new Date("2000-01-01");
         date.setUTCFullYear(text.substring(6, 10))
         date.setMonth(text.substring(3, 5) - 1);
         date.setDate(text.substring(0, 2));
