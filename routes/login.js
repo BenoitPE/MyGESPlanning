@@ -30,34 +30,24 @@ router.post('/', async function(req, res) {
     try {
         req.session.connected = true;
         req.session.username = req.body.username.split('@')[0];
-        req.session.password = encrypt(req.body.password);
+        req.session.password = req.body.password;
 
         let api = new APIConnection(req.session.username, req.session.password);
-        api.api = await login(req, res)
+        await api.login(req, res)
 
         req.session.profile = await api.getProfile();
 
         console.log("New user connected: " + req.session.username);
         res.redirect('/agenda');
     } catch (error) {
-        req.session.destroy();
+        req.   session.destroy();
         res.clearCookie("connect.sid")
+        res.clearCookie("MygesBearerToken")
         res.render('login', {
             upToDate: upToDate,
             error: error
         });
     }
 })
-
-async function login(req, res) {
-   let mygesApi = await myges.login(req.body.username.split('@')[0], req.body.password);
-   let expires_in = parseInt(mygesApi.credentials.expires_in, 10) * 1000;;
-   mygesApi.credentials.expires_in = (Date.now() + expires_in).toString(); 
-   res.cookie('MygesBearerToken', encrypt(JSON.stringify(mygesApi)), {
-    sameSite: 'none',
-    secure: true
-    });
-   return mygesApi;
-}
 
 module.exports = router;
