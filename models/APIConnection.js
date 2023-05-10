@@ -21,27 +21,42 @@ class APIConnection {
                this.api = new myges.GesAPI(ApiToken.credentials);
                loginOK = true
             }
-         }  catch (error) {
-            //todo: handle error
+         } catch (error) {
+            console.log("APIConnection Parse ApiToken : " + error);
+            res.redirect('/login');
          }
       }
       if (loginOK == false) {
-         this.api = await myges.GesAPI.login(this.username, this.password);
-         let expires_in = parseInt(this.api.credentials.expires_in, 10) * 1000;;
-         this.api.credentials.expires_in = (Date.now() + expires_in).toString();
-         res.cookie('MygesBearerToken', encrypt(JSON.stringify(this.api), this.password), {
-            sameSite: 'none',
-            secure: true
-         });
+         try {
+            this.api = await myges.GesAPI.login(this.username, this.password);
+            let expires_in = parseInt(this.api.credentials.expires_in, 10) * 1000;;
+            this.api.credentials.expires_in = (Date.now() + expires_in).toString();
+            res.cookie('MygesBearerToken', encrypt(JSON.stringify(this.api), this.password), {
+               sameSite: 'none',
+               secure: true
+            });
+         } catch (error) {
+            console.log("APIConnection login : " + error);
+            res.redirect('/login');
+         }
       }
       return this.api;
    }
 
    async getGrades() {
       let notes = [];
-      let years = await this.api.getYears();
+      let years = 0;
+      try {
+         years = await this.api.getYears();
+      } catch (error) {
+         console.log("APIConnection getYears : " + error);
+      }
       for (const year of years) {
-         notes.push(await this.api.getGrades(year))
+         try {
+            notes.push(await this.api.getGrades(year))
+         } catch (error) {
+            console.log("APIConnection getGrades : " + error);
+         }
       }
       if (notes != null || notes != NaN || notes != undefined) {
          for (let note of notes) {
@@ -56,9 +71,19 @@ class APIConnection {
 
    async getAbsences() {
       let apiAbsences = [];
-      let years = await this.api.getYears();
+      let years = 0;
+      try {
+         years = await this.api.getYears();
+      } catch (error) {
+         console.log("APIConnection getYears : " + error);
+      }
+
       for (const year of years) {
-         apiAbsences.push(await this.api.getAbsences(year))
+         try {
+            apiAbsences.push(await this.api.getAbsences(year))
+         } catch (error) {
+            console.log("APIConnection getAbsences : " + error);
+         }
       }
       let absencesArray = [];
 
@@ -83,9 +108,14 @@ class APIConnection {
 
       let firstDayDate = APIConnection.stringToDate(this.getWeekFirstDay(week), 0, 0, 0);
       let lastDayDate = APIConnection.stringToDate(this.getWeekLastDay(week), 23, 59, 59);
+      let lessons = [];
 
-      // Get all lessons between firstDay and lastDay
-      let lessons = await this.api.getAgenda(firstDayDate, lastDayDate);
+      try {
+         // Get all lessons between firstDay and lastDay
+         lessons = await this.api.getAgenda(firstDayDate, lastDayDate);
+      } catch (error) {
+         console.log("APIConnection getAgenda : " + error);
+      }
 
       let agenda = {};
 
@@ -142,7 +172,12 @@ class APIConnection {
    }
 
    async getProfile() {
-      return await this.api.getProfile();
+      try {
+         return await this.api.getProfile();
+      }
+      catch (error) {
+         console.log("APIConnection getProfile : " + error);
+      }
    }
 
 
