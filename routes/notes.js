@@ -8,7 +8,7 @@ router.get('/', async function (req, res) {
 
    let grades = await api.getGrades();
 
-   if (grades == null || grades == NaN || grades == undefined) {
+   if (grades.length == 0) {
       res.redirect('/agenda');
    } else {
       res.render('notes', {

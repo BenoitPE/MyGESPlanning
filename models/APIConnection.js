@@ -58,7 +58,7 @@ class APIConnection {
             console.log("APIConnection getGrades : " + error);
          }
       }
-      if (notes != null || notes != NaN || notes != undefined) {
+      if (notes.length > 0) {
          for (let note of notes) {
             note.sort((a, b) => (a.course > b.course) ? 1 : ((b.course > a.course) ? -1 : 0))
             note.sort(function (a, b) {
@@ -71,35 +71,37 @@ class APIConnection {
 
    async getAbsences() {
       let apiAbsences = [];
-      let years = 0;
+      let years = [];
+      let absencesArray = [];
       try {
          years = await this.api.getYears();
       } catch (error) {
          console.log("APIConnection getYears : " + error);
       }
 
-      for (const year of years) {
-         try {
-            apiAbsences.push(await this.api.getAbsences(year))
-         } catch (error) {
-            console.log("APIConnection getAbsences : " + error);
-         }
-      }
-      let absencesArray = [];
-
-      for (const years of apiAbsences)
-         if (years != undefined) {
-            for (var absence of years) {
-               let data = {
-                  date: moment(absence.date).locale('fr').format('DD/MM/YYYY, HH:mm:ss'),
-                  course_name: absence.course_name,
-                  trimester: absence.trimester_name,
-                  year: absence.year,
-                  justified: absence.justified
-               }
-               absencesArray.push(data);
+      if (years.length > 0) {
+         for (const year of years) {
+            try {
+               apiAbsences.push(await this.api.getAbsences(year))
+            } catch (error) {
+               console.log("APIConnection getAbsences : " + error);
             }
          }
+
+         for (const years of apiAbsences)
+            if (years != undefined) {
+               for (var absence of years) {
+                  let data = {
+                     date: moment(absence.date).locale('fr').format('DD/MM/YYYY, HH:mm:ss'),
+                     course_name: absence.course_name,
+                     trimester: absence.trimester_name,
+                     year: absence.year,
+                     justified: absence.justified
+                  }
+                  absencesArray.push(data);
+               }
+            }
+      }
 
       return absencesArray;
    }
