@@ -14,6 +14,7 @@ class APIConnection {
 
    async login(req, res) {
       let loginOK = false
+      let error
       if (req.cookies && req.cookies['MygesBearerToken']) {
          try {
             let ApiToken = JSON.parse(decrypt(req.cookies['MygesBearerToken'], this.password))
@@ -23,7 +24,6 @@ class APIConnection {
             }
          } catch (error) {
             console.log("APIConnection Parse ApiToken : " + error);
-            res.redirect('/login');
          }
       }
       if (loginOK == false) {
@@ -35,12 +35,12 @@ class APIConnection {
                sameSite: 'none',
                secure: true
             });
-         } catch (error) {
-            console.log("APIConnection login : " + error);
-            res.redirect('/login');
+         } catch (err) {
+            console.log("APIConnection login : " + err);
+            error = err;
          }
       }
-      return this.api;
+      return error;
    }
 
    async getGrades() {
