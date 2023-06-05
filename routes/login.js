@@ -34,19 +34,19 @@ router.post('/', async function(req, res) {
 
         let api = new APIConnection(req.session.username, req.session.password);
         await api.login(req, res)
+        
+        if(api.api != undefined){
+         req.session.profile = await api.getProfile();
 
-        req.session.profile = await api.getProfile();
+         console.log("New user connected: " + req.session.username);
+         res.redirect('/agenda');
+        }
+         else{
+            req.session.destroy();
+         }
 
-        console.log("New user connected: " + req.session.username);
-        res.redirect('/agenda');
     } catch (error) {
-        req.   session.destroy();
-        res.clearCookie("connect.sid")
-        res.clearCookie("MygesBearerToken")
-        res.render('login', {
-            upToDate: upToDate,
-            error: error
-        });
+        req.session.destroy();
     }
 })
 
